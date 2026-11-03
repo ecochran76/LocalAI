@@ -1912,7 +1912,9 @@ func (cfg *ModelConfig) SetDefaults(opts ...ConfigLoaderOption) {
 	// the final value, not a pre-guess nil. Uses the local GPU here; in distributed
 	// mode the router re-applies the same heuristics for the selected node's GPU
 	// before loading. Explicit config always wins.
-	ApplyHardwareDefaults(cfg, localGPU())
+	if !HardwareDefaultsDisabled() {
+		ApplyHardwareDefaults(cfg, localGPU())
+	}
 
 	cfg.syncKnownUsecasesFromString()
 }
